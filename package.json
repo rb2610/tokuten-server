@@ -1,9 +1,9 @@
 {
-  "name": "tokuten-express",
+  "name": "tokuten-server",
   "version": "0.1.0",
   "scripts": {
     "start": "nodemon src/server.js --exec babel-node",
-    "test": "mocha test/server.test.js --reporter mochawesome",
+    "test": "nyc --reporter=lcov --reporter=text mocha test/server.test.js  --compilers js:babel-register --reporter mochawesome",
     "build": "babel src -d build --presets es2015,stage-2",
     "serve": "node build/server.js"
   },
@@ -22,6 +22,7 @@
     "concurrently": "^4.0.1",
     "mocha": "^5.2.0",
     "mochawesome": "^3.0.3",
+    "nyc": "^13.0.1",
     "supertest": "^3.3.0"
   }
 }
