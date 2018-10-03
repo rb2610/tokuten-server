@@ -4,16 +4,20 @@ const app = express();
 const port = process.env.port || 3001;
 
 var data = {
-    "data": {
-      "user": {
-        "name": "Foo",
-        "wins": 5
+    "data": [
+      {
+        "user": {
+          "name": "Foo",
+          "wins": 5
+        }
       },
-      "user": {
-        "name": "Roo",
-        "wins": 2
+      {
+        "user": {
+          "name": "Roo",
+          "wins": 2
+        }
       }
-    }
+    ]
   };
 
 app.get("/api/status", (request, response) => {

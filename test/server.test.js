@@ -14,16 +14,20 @@ describe("Server API", () => {
         .then(response => {
           expect(response).to.have.status(200);
           expect(response.body).to.deep.equal({
-            "data": {
-              "user": {
-                "name": "Foo",
-                "wins": 5
+            "data": [
+              {
+                "user": {
+                  "name": "Foo",
+                  "wins": 5
+                }
               },
-              "user": {
-                "name": "Roo",
-                "wins": 2
+              {
+                "user": {
+                  "name": "Roo",
+                  "wins": 2
+                }
               }
-            }
+            ]
           });
         })
         .catch(error => {
