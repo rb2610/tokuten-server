@@ -1,10 +1,11 @@
 import server from "../src/server";
 import chai from "chai";
 import chaiHttp from "chai-http";
+import { describe } from "mocha";
 
 chai.use(chaiHttp);
-const request = chai.request;
 const expect = chai.expect;
+const request = chai.request;
 
 describe("Server API", () => {
   describe("scoreData", () => {
