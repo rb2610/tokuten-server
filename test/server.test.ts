@@ -15,18 +15,16 @@ describe("Server API", () => {
         .then(response => {
           expect(response).to.have.status(200);
           expect(response.body).to.deep.equal({
-            "data": [
+            data: [
               {
-                "user": {
-                  "name": "Foo",
-                  "wins": 5
-                }
+                ID: 1,
+                NAME: "Foo",
+                WINS: 5
               },
               {
-                "user": {
-                  "name": "Roo",
-                  "wins": 2
-                }
+                ID: 2,
+                NAME: "Roo",
+                WINS: 2
               }
             ]
           });
@@ -51,5 +49,5 @@ describe("Server API", () => {
           throw error;
         });
     });
-  })
+  });
 });

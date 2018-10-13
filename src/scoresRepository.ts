@@ -1,3 +1,5 @@
+import { Client } from "pg";
+
 class ScoresRepository {
   data = {
     data: [
@@ -16,11 +18,16 @@ class ScoresRepository {
     ]
   };
 
+  client = new Client();
+
   /**
    * 
    */
-  scores() {
-    return this.data;
+  async scores() {
+    await this.client.connect();
+    let result = await this.client.query(`SELECT * FROM tokuten.test`);
+    await this.client.end();
+    return result.rows;
   }
 }
 
