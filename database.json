@@ -1,0 +1,10 @@
+{
+  "dev": {
+    "driver": "pg",
+    "user": { "ENV": "PGOWNER" },
+    "password": { "ENV": "PGOWNERPASSWORD" },
+    "host": "localhost",
+    "database": { "ENV": "PGDATABASE" },
+    "schema": "tokuten"
+  }
+}
