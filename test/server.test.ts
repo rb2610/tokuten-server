@@ -17,14 +17,14 @@ describe("Server API", () => {
           expect(response.body).to.deep.equal({
             data: [
               {
-                ID: 1,
-                NAME: "Foo",
-                WINS: 5
+                id: 1,
+                name: "Foo",
+                wins: 5
               },
               {
-                ID: 2,
-                NAME: "Roo",
-                WINS: 2
+                id: 2,
+                name: "Roo",
+                wins: 2
               }
             ]
           });
