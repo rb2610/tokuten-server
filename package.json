@@ -2,7 +2,7 @@
   "name": "tokuten-server",
   "version": "0.1.0",
   "scripts": {
-    "start": "nodemon src/server.ts --exec babel-node",
+    "start": "ts-node-dev --require dotenv/config src/server.ts",
     "test": "nyc mocha -r ts-node/register -r dotenv/config test/server.test.ts --reporter mochawesome --reporter nyan",
     "tsc": "tsc",
     "build": "babel src -d build --presets es2015,stage-2",
@@ -10,8 +10,7 @@
   },
   "nyc": {
     "extension": [
-      ".ts",
-      ".tsx"
+      ".ts"
     ],
     "exclude": [
       "**/*.d.ts"
@@ -55,6 +54,7 @@
     "mochawesome": "^3.0.3",
     "nyc": "^13.0.1",
     "ts-node": "^7.0.1",
+    "ts-node-dev": "^1.0.0-pre.30",
     "typescript": "^3.1.1",
     "typescript-eslint-parser": "^19.0.2"
   }

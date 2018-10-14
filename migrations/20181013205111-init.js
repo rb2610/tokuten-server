@@ -24,6 +24,10 @@ exports.up = (db, callback) => {
         name: { type: "string", notNull: true },
         wins: { type: "int", notNull: true, default: 0 }
       }),
+      db.runSql.bind(db, `
+        GRANT SELECT, INSERT, UPDATE, DELETE
+        ON ALL TABLES IN SCHEMA tokuten 
+        TO tokuten_user;`),
       db.insert.bind(db, "test", ["name", "wins"], ["Foo", "5"]),
       db.insert.bind(db, "test", ["name", "wins"], ["Roo", "2"])
     ],

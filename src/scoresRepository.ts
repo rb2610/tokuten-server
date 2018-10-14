@@ -25,6 +25,9 @@ class ScoresRepository {
    */
   async scores() {
     await this.client.connect();
+    console.log("PGUSER:" + process.env.PGUSER);
+    console.log("PGPASSWORD:" + process.env.PGPASSWORD);
+    console.log("PGDATABASE:" + process.env.PGDATABASE);
     let result = await this.client.query(`SELECT * FROM tokuten.test`);
     await this.client.end();
     return result.rows;
