@@ -2,13 +2,14 @@
   "name": "tokuten-server",
   "version": "0.1.0",
   "scripts": {
-    "dev": "ts-node-dev --require dotenv/config src/server.ts",
-    "start": "npm run serve",
-    "test": "nyc mocha -r ts-node/register -r dotenv/config test/server.test.ts --reporter mochawesome --reporter nyan",
-    "build-ts": "tsc",
-    "postinstall": "npm run build-ts",
     "build": "babel src -d build --presets es2015,stage-2",
-    "serve": "node -r dotenv/config build/src/server.js"
+    "build-ts": "tsc",
+    "db-migrate": "node_modules/db-migrate/bin/db-migrate up",
+    "dev": "ts-node-dev --require dotenv/config src/server.ts",
+    "test": "nyc mocha -r ts-node/register -r dotenv/config test/server.test.ts --reporter mochawesome --reporter nyan",
+    "postinstall": "npm run build-ts && npm run db-migrate",
+    "serve": "node -r dotenv/config build/src/server.js",
+    "start": "npm run serve"
   },
   "nyc": {
     "extension": [
