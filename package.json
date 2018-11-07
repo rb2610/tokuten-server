@@ -8,7 +8,7 @@
     "build-ts": "tsc",
     "postinstall": "npm run build-ts",
     "build": "babel src -d build --presets es2015,stage-2",
-    "serve": "node build/server.js"
+    "serve": "node -r dotenv/config build/src/server.js"
   },
   "nyc": {
     "extension": [
