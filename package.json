@@ -2,9 +2,11 @@
   "name": "tokuten-server",
   "version": "0.1.0",
   "scripts": {
-    "start": "ts-node-dev --require dotenv/config src/server.ts",
+    "dev": "ts-node-dev --require dotenv/config src/server.ts",
+    "start": "npm run serve",
     "test": "nyc mocha -r ts-node/register -r dotenv/config test/server.test.ts --reporter mochawesome --reporter nyan",
-    "tsc": "tsc",
+    "build-ts": "tsc",
+    "postinstall": "npm run build-ts",
     "build": "babel src -d build --presets es2015,stage-2",
     "serve": "node build/server.js"
   },
