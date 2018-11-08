@@ -3,8 +3,8 @@
     "driver": "pg",
     "user": { "ENV": "PGOWNER" },
     "password": { "ENV": "PGOWNERPASSWORD" },
-    "host": "localhost",
+    "host": { "ENV": "PGHOST" },
     "database": { "ENV": "PGDATABASE" },
-    "schema": "tokuten"
+    "schema": { "ENV": "SCHEMA" }
   }
 }

@@ -6,6 +6,9 @@ var dbm;
 var type;
 var seed;
 
+const schemaName = process.env.SCHEMA;
+const pgUser = process.env.PGUSER;
+
 /**
  * We receive the dbmigrate dependency from dbmigrate initially.
  * This enables us to not have to rely on NODE_PATH.
@@ -26,8 +29,8 @@ exports.up = (db, callback) => {
       }),
       db.runSql.bind(db, `
         GRANT SELECT, INSERT, UPDATE, DELETE
-        ON ALL TABLES IN SCHEMA tokuten 
-        TO tokuten_user;`),
+        ON ALL TABLES IN SCHEMA ${schemaName} 
+        TO ${pgUser};`),
       db.insert.bind(db, "test", ["name", "wins"], ["Foo", "5"]),
       db.insert.bind(db, "test", ["name", "wins"], ["Roo", "2"])
     ],
