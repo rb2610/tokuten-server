@@ -5,6 +5,9 @@
     "password": { "ENV": "PGOWNERPASSWORD" },
     "host": { "ENV": "PGHOST" },
     "database": { "ENV": "PGDATABASE" },
-    "schema": { "ENV": "SCHEMA" }
+    "schema": { "ENV": "SCHEMA" },
+    "addIfNotExists": {
+      "ssl": true
+    }
   }
 }
