@@ -5,6 +5,8 @@
     "build": "babel src -d build --presets es2015,stage-2",
     "build-ts": "tsc",
     "db-migrate": "node_modules/db-migrate/bin/db-migrate up",
+    "db-rollback": "node_modules/db-migrate/bin/db-migrate down",
+    "db-reset": "node_modules/db-migrate/bin/db-migrate reset",
     "dev": "ts-node-dev --require dotenv/config src/server.ts",
     "test": "nyc mocha -r ts-node/register -r dotenv/config test/server.test.ts --reporter mochawesome --reporter nyan",
     "heroku-postbuild": "npm run build-ts && npm run db-migrate",
@@ -24,6 +26,8 @@
     "all": true
   },
   "dependencies": {
+    "@types/body-parser": "^1.17.0",
+    "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^6.1.0",
     "eslint": "^5.6.1",

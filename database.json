@@ -1,5 +1,16 @@
 {
+  "defaultEnv": {
+    "ENV": "NODE_ENV"
+  },
   "dev": {
+    "driver": "pg",
+    "user": { "ENV": "PGOWNER" },
+    "password": { "ENV": "PGOWNERPASSWORD" },
+    "host": { "ENV": "PGHOST" },
+    "database": { "ENV": "PGDATABASE" },
+    "schema": { "ENV": "SCHEMA" }
+  },
+  "prod": {
     "driver": "pg",
     "user": { "ENV": "PGOWNER" },
     "password": { "ENV": "PGOWNERPASSWORD" },

@@ -1,20 +1,30 @@
-import { Pool, PoolClient } from "pg";
+import { Pool, QueryResult } from "pg";
+
+const schemaName : string = process.env.SCHEMA || "tokuten";
+const pool : Pool = new Pool();
+
+export interface IScore {
+  id: number,
+  name: string,
+  wins: number
+}
 
 class ScoresRepository {
-  // TODO: DEPENDENCY INJECTION!!
-  pool : Pool = new Pool();
-
-  /**
-   * 
-   */
-  async scores() {
-    let client: PoolClient = await this.pool.connect();
-    const schemaName = process.env.SCHEMA;
-
+  async scores() : Promise<QueryResult> {
     try {
-      return await client.query(`SELECT * FROM ${schemaName}.test`);
-    } finally {
-      client.release();
+      return await pool.query(`SELECT * FROM ${schemaName}.test`);
+    } catch(exception) {
+      // TODO: Logging!
+      throw exception;
+    }
+  }
+
+  async putScore(score : IScore) : Promise<QueryResult> {
+    try {
+      return await pool.query(`INSERT INTO ${schemaName}.test(name, wins) VALUES ($1, $2) RETURNING *`, [score.name, score.wins]); 
+    } catch(exception) {
+      // TODO: Logging!
+      throw exception;
     }
   }
 }

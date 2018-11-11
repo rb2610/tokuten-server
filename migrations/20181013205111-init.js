@@ -27,10 +27,18 @@ exports.up = (db, callback) => {
         name: { type: "string", notNull: true },
         wins: { type: "int", notNull: true, default: 0 }
       }),
-      db.runSql.bind(db, `
-        GRANT SELECT, INSERT, UPDATE, DELETE
+      db.runSql.bind(
+        db,
+        `GRANT SELECT, INSERT, UPDATE, DELETE, TRUNCATE
         ON ALL TABLES IN SCHEMA ${schemaName} 
-        TO ${pgUser};`),
+        TO ${pgUser};`
+      ),
+      db.runSql.bind(
+        db,
+        `GRANT USAGE, SELECT, UPDATE
+        ON SEQUENCE test_id_seq
+        TO ${pgUser};`
+      ),
       db.insert.bind(db, "test", ["name", "wins"], ["Foo", "5"]),
       db.insert.bind(db, "test", ["name", "wins"], ["Roo", "2"])
     ],
