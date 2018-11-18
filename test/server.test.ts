@@ -39,7 +39,7 @@ describe("Server API", () => {
     });
   });
 
-  describe("PUT scoreData", () => {
+  describe("POST scoreData", () => {
     it("should insert score data provided as JSON into the Database", () => {
       return request(server)
         .post("/api/scoreData")

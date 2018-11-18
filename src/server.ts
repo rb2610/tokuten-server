@@ -19,6 +19,8 @@ app.get("/api/status", (request, response) => {
   response.json({ status: "Most Excellent" });
 });
 
+app.options("/api/scoreData", cors(corsOptions));
+
 app.get("/api/scoreData", cors(corsOptions), (request, response) => {
   scoresRepository
     .scores()
