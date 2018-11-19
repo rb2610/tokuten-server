@@ -22,7 +22,7 @@ class ScoresRepository {
 
   async addPlayer(score : IScore) : Promise<QueryResult> {
     try {
-      return await pool.query(`INSERT INTO ${schemaName}.test(name, wins, played) VALUES ($1, 0, 0) RETURNING *`, [score.name]); 
+      return await pool.query(`INSERT INTO ${schemaName}.test(name, wins, played) VALUES ($1, $2, $3) RETURNING *`, [score.name, 0, 0]); 
     } catch(exception) {
       // TODO: Logging!
       throw exception;
