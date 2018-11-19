@@ -35,7 +35,7 @@ app.get("/api/scoreData", cors(corsOptions), (request, response) => {
 
 app.post("/api/scoreData", cors(corsOptions), (request, response) => {
   scoresRepository
-    .putScore(request.body)
+    .addPlayer(request.body)
     .then(result => {
       return response.json({ data: result.rows });
     })
@@ -43,7 +43,19 @@ app.post("/api/scoreData", cors(corsOptions), (request, response) => {
       console.log(error);
       return response.json(error)
     });
-})
+});
+
+app.put("/api/scoreData/:id", cors(corsOptions), (request, response) => {
+  scoresRepository
+    .updatePlayerScore(request.params.id, request.body)
+    .then(result => {
+      return response.json({ data: result.rows });
+    })
+    .catch(error => {
+      console.log(error);
+      return response.json(error);
+    });
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 

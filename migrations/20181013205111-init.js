@@ -25,7 +25,8 @@ exports.up = (db, callback) => {
       db.createTable.bind(db, "test", {
         id: { type: "int", primaryKey: true, autoIncrement: true },
         name: { type: "string", notNull: true },
-        wins: { type: "int", notNull: true, default: 0 }
+        wins: { type: "int", notNull: true, default: 0 },
+        played: { type: "int", notNull: true, default: 0 }
       }),
       db.runSql.bind(
         db,
@@ -39,8 +40,8 @@ exports.up = (db, callback) => {
         ON SEQUENCE test_id_seq
         TO ${pgUser};`
       ),
-      db.insert.bind(db, "test", ["name", "wins"], ["Foo", "5"]),
-      db.insert.bind(db, "test", ["name", "wins"], ["Roo", "2"])
+      db.insert.bind(db, "test", ["name", "wins", "played"], ["Foo", "5", "8"]),
+      db.insert.bind(db, "test", ["name", "wins", "played"], ["Roo", "2", "8"])
     ],
     callback
   );

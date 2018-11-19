@@ -23,12 +23,14 @@ describe("Server API", () => {
               {
                 id: 1,
                 name: "Foo",
-                wins: 5
+                wins: 5,
+                played: 7
               },
               {
                 id: 2,
                 name: "Roo",
-                wins: 2
+                wins: 2,
+                played: 7
               }
             ]
           });
@@ -44,8 +46,7 @@ describe("Server API", () => {
       return request(server)
         .post("/api/scoreData")
         .send({
-          name: "Bob",
-          wins: 1
+          name: "Bob"
         })
         .then(response => {
           expect(response).to.have.status(200);
@@ -54,7 +55,35 @@ describe("Server API", () => {
               {
                 id: 3,
                 name: "Bob",
-                wins: 1
+                wins: 0,
+                played: 0
+              }
+            ]
+          });
+        })
+        .catch(error => {
+          throw error;
+        })
+    });
+  });
+
+  describe("PUT scoreData", () => {
+    it("should update score data provided as JSON in the Database", () => {
+      return request(server)
+        .put("/api/scoreData/1")
+        .send({
+          wins: 6,
+          played: 8
+        })
+        .then(response => {
+          expect(response).to.have.status(200);
+          expect(response.body).to.deep.equal({
+            data: [
+              {
+                id: 1,
+                name: "Foo",
+                wins: 6,
+                played: 8
               }
             ]
           });
@@ -84,7 +113,7 @@ describe("Server API", () => {
   beforeEach(done => {
     pool.query(`TRUNCATE ${schemaName}.test`)
       .then(() => pool.query(`ALTER SEQUENCE test_id_seq RESTART`))
-      .then(() => pool.query(`INSERT INTO ${schemaName}.test (name, wins) VALUES ('Foo', 5), ('Roo', 2)`)).then(() => done());
+      .then(() => pool.query(`INSERT INTO ${schemaName}.test (name, wins, played) VALUES ('Foo', 5, 7), ('Roo', 2, 7)`)).then(() => done());
   });
 
   afterEach((done) => {
