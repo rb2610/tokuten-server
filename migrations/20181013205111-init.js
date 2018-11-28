@@ -22,7 +22,6 @@ exports.setup = (options, seedLink) => {
 exports.up = (db, callback) => {
   async.series(
     [
-      db.runSql.bind(db, `CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`),
       db.createTable.bind(db, "test", {
         id: {
           type: "int",
@@ -36,40 +35,35 @@ exports.up = (db, callback) => {
       }),
       db.createTable.bind(db, "players", {
         id: {
-          type: "uuid",
+          type: "int",
           primaryKey: true,
           notNull: true,
-          defaultValue: new String("uuid_generate_v4()")
+          autoIncrement: true
         },
         name: { type: "string", notNull: true }
       }),
       db.createTable.bind(db, "groups", {
         id: {
-          type: "uuid",
+          type: "int",
           primaryKey: true,
           notNull: true,
-          defaultValue: new String("uuid_generate_v4()")
+          autoIncrement: true
         },
         name: { type: "string", notNull: true }
       }),
       db.createTable.bind(db, "games", {
         id: {
-          type: "uuid",
+          type: "int",
           primaryKey: true,
           notNull: true,
-          defaultValue: new String("uuid_generate_v4()")
+          autoIncrement: true
         },
         name: { type: "string", notNull: true }
       }),
       db.createTable.bind(db, "rounds", {
-        id: {
-          type: "uuid",
-          primaryKey: true,
-          notNull: true,
-          defaultValue: new String("uuid_generate_v4()")
-        },
         game_id: {
-          type: "uuid",
+          type: "int",
+          primaryKey: true,
           notNull: true,
           foreignKey: {
             name: "rounds_game_id_fk",
@@ -82,7 +76,8 @@ exports.up = (db, callback) => {
           }
         },
         group_id: {
-          type: "uuid",
+          type: "int",
+          primaryKey: true,
           notNull: true,
           foreignKey: {
             name: "rounds_group_id_fk",
@@ -94,28 +89,32 @@ exports.up = (db, callback) => {
             mapping: "id"
           }
         },
-        time: { type: "timestamp", notNull: true },
-        game: { type: "uuid" }
+        time: {
+          type: "timestamptz",
+          notNull: true,
+          primaryKey: true
+        }
       }),
       db.createTable.bind(db, "rounds_participants", {
-        round_id: {
-          type: "uuid",
-          notNull: true,
+        round_game_id: {
+          type: "int",
           primaryKey: true,
-          foreignKey: {
-            name: "rounds_participants_round_id_fk",
-            table: "rounds",
-            rules: {
-              onDelete: "CASCADE",
-              onUpdate: "RESTRICT"
-            },
-            mapping: "id"
-          }
+          notNull: true
+        },
+        round_group_id: {
+          type: "int",
+          primaryKey: true,
+          notNull: true
+        },
+        round_time: {
+          type: "timestamptz",
+          primaryKey: true,
+          notNull: true
         },
         participant_id: {
-          type: "uuid",
-          notNull: true,
+          type: "int",
           primaryKey: true,
+          notNull: true,
           foreignKey: {
             name: "rounds_participants_participant_id_fk",
             table: "players",
@@ -127,25 +126,35 @@ exports.up = (db, callback) => {
           }
         }
       }),
+      db.runSql.bind(
+        db,
+        `ALTER TABLE "rounds_participants"
+        ADD CONSTRAINT "rounds_participants_round_id_fk"
+        FOREIGN KEY (round_game_id, round_group_id, round_time)
+        REFERENCES "rounds" (game_id, group_id, time)
+        ON DELETE CASCADE
+        ON UPDATE RESTRICT;`
+      ),
       db.createTable.bind(db, "rounds_winners", {
-        round_id: {
-          type: "uuid",
-          notNull: true,
+        round_game_id: {
+          type: "int",
           primaryKey: true,
-          foreignKey: {
-            name: "rounds_winners_round_id_fk",
-            table: "rounds",
-            rules: {
-              onDelete: "CASCADE",
-              onUpdate: "RESTRICT"
-            },
-            mapping: "id"
-          }
+          notNull: true
+        },
+        round_group_id: {
+          type: "int",
+          primaryKey: true,
+          notNull: true
+        },
+        round_time: {
+          type: "timestamptz",
+          primaryKey: true,
+          notNull: true
         },
         winner_id: {
-          type: "uuid",
-          notNull: true,
+          type: "int",
           primaryKey: true,
+          notNull: true,
           foreignKey: {
             name: "rounds_winners_winners_id_fk",
             table: "players",
@@ -157,11 +166,20 @@ exports.up = (db, callback) => {
           }
         }
       }),
+      db.runSql.bind(
+        db,
+        `ALTER TABLE "rounds_winners"
+        ADD CONSTRAINT "rounds_winners_round_id_fk"
+        FOREIGN KEY (round_game_id, round_group_id, round_time)
+        REFERENCES "rounds" (game_id, group_id, time)
+        ON DELETE CASCADE
+        ON UPDATE RESTRICT;`
+      ),
       db.createTable.bind(db, "games_players", {
         game_id: {
-          type: "uuid",
-          notNull: true,
+          type: "int",
           primaryKey: true,
+          notNull: true,
           foreignKey: {
             name: "games_players_game_id_fk",
             table: "games",
@@ -173,9 +191,9 @@ exports.up = (db, callback) => {
           }
         },
         player_id: {
-          type: "uuid",
-          notNull: true,
+          type: "int",
           primaryKey: true,
+          notNull: true,
           foreignKey: {
             name: "games_players_player_id_fk",
             table: "players",
@@ -189,9 +207,9 @@ exports.up = (db, callback) => {
       }),
       db.createTable.bind(db, "groups_players", {
         group_id: {
-          type: "uuid",
-          notNull: true,
+          type: "int",
           primaryKey: true,
+          notNull: true,
           foreignKey: {
             name: "groups_players_group_id_fk",
             table: "groups",
@@ -203,9 +221,9 @@ exports.up = (db, callback) => {
           }
         },
         player_id: {
-          type: "uuid",
-          notNull: true,
+          type: "int",
           primaryKey: true,
+          notNull: true,
           foreignKey: {
             name: "groups_players_player_id_fk",
             table: "players",
@@ -219,9 +237,9 @@ exports.up = (db, callback) => {
       }),
       db.createTable.bind(db, "groups_games", {
         group_id: {
-          type: "uuid",
-          notNull: true,
+          type: "int",
           primaryKey: true,
+          notNull: true,
           foreignKey: {
             name: "groups_games_group_id_fk",
             table: "groups",
@@ -233,9 +251,9 @@ exports.up = (db, callback) => {
           }
         },
         game_id: {
-          type: "uuid",
-          notNull: true,
+          type: "int",
           primaryKey: true,
+          notNull: true,
           foreignKey: {
             name: "groups_games_game_id_fk",
             table: "games",
@@ -267,16 +285,16 @@ exports.up = (db, callback) => {
 exports.down = (db, callback) => {
   async.series(
     [
-      db.dropTable("test"),
-      db.dropTable("players"),
-      db.dropTable("groups"),
-      db.dropTable("games"),
-      db.dropTable("rounds"),
-      db.dropTable("rounds_participants"),
-      db.dropTable("rounds_winners"),
-      db.dropTable("games_players"),
-      db.dropTable("groups_players"),
-      db.dropTable("groups_games")
+      db.dropTable.bind(db, "test"),
+      db.dropTable.bind(db, "groups_games"),
+      db.dropTable.bind(db, "groups_players"),
+      db.dropTable.bind(db, "games_players"),
+      db.dropTable.bind(db, "rounds_winners"),
+      db.dropTable.bind(db, "rounds_participants"),
+      db.dropTable.bind(db, "rounds"),
+      db.dropTable.bind(db, "games"),
+      db.dropTable.bind(db, "groups"),
+      db.dropTable.bind(db, "players")
     ],
     callback
   );
