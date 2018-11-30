@@ -1,19 +1,22 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
+import scoreTable from "./resources/scoreTableResource";
 import ScoresRepository from "./scoresRepository";
 
 const app = express();
 const port = process.env.PORT || 3001;
 const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
 
-const scoresRepository : ScoresRepository = new ScoresRepository();
-
 const corsOptions = {
   origin: clientUrl
 }
 
+const scoresRepository : ScoresRepository = new ScoresRepository();
+
 app.use(bodyParser.json());
+
+app.use("/scoreTable", scoreTable);
 
 app.get("/api/status", (request, response) => {
   response.json({ status: "Most Excellent" });

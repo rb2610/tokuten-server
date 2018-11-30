@@ -7,7 +7,7 @@
     "db-rollback": "node_modules/db-migrate/bin/db-migrate down",
     "db-reset": "node_modules/db-migrate/bin/db-migrate reset",
     "dev": "ts-node-dev --require dotenv/config src/server.ts",
-    "test": "nyc mocha -r ts-node/register -r dotenv/config test/server.test.ts --reporter mochawesome --reporter nyan",
+    "test": "nyc mocha -r ts-node/register -r dotenv/config --recursive ./test/*.test.ts --reporter mochawesome --reporter nyan",
     "heroku-postbuild": "npm run build && npm run db-migrate",
     "serve": "node -r dotenv/config build/src/server.js",
     "start": "npm run serve"
