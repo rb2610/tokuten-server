@@ -40,7 +40,7 @@ exports.up = (db, callback) => {
           notNull: true,
           autoIncrement: true
         },
-        name: { type: "string", notNull: true }
+        name: { type: "string", notNull: true, unique: true }
       }),
       db.createTable.bind(db, "groups", {
         id: {
@@ -49,7 +49,7 @@ exports.up = (db, callback) => {
           notNull: true,
           autoIncrement: true
         },
-        name: { type: "string", notNull: true }
+        name: { type: "string", notNull: true, unique: true }
       }),
       db.createTable.bind(db, "games", {
         id: {
@@ -58,7 +58,7 @@ exports.up = (db, callback) => {
           notNull: true,
           autoIncrement: true
         },
-        name: { type: "string", notNull: true }
+        name: { type: "string", notNull: true, unique: true }
       }),
       db.createTable.bind(db, "rounds", {
         game_id: {
@@ -95,7 +95,7 @@ exports.up = (db, callback) => {
           primaryKey: true
         }
       }),
-      db.createTable.bind(db, "rounds_participants", {
+      db.createTable.bind(db, "rounds_players", {
         round_game_id: {
           type: "int",
           primaryKey: true,
@@ -111,12 +111,12 @@ exports.up = (db, callback) => {
           primaryKey: true,
           notNull: true
         },
-        participant_id: {
+        player_id: {
           type: "int",
           primaryKey: true,
           notNull: true,
           foreignKey: {
-            name: "rounds_participants_participant_id_fk",
+            name: "rounds_players_player_id_fk",
             table: "players",
             rules: {
               onDelete: "CASCADE",
@@ -124,52 +124,17 @@ exports.up = (db, callback) => {
             },
             mapping: "id"
           }
-        }
-      }),
-      db.runSql.bind(
-        db,
-        `ALTER TABLE "rounds_participants"
-        ADD CONSTRAINT "rounds_participants_round_id_fk"
-        FOREIGN KEY (round_game_id, round_group_id, round_time)
-        REFERENCES "rounds" (game_id, group_id, time)
-        ON DELETE CASCADE
-        ON UPDATE RESTRICT;`
-      ),
-      db.createTable.bind(db, "rounds_winners", {
-        round_game_id: {
-          type: "int",
-          primaryKey: true,
-          notNull: true
         },
-        round_group_id: {
-          type: "int",
-          primaryKey: true,
-          notNull: true
-        },
-        round_time: {
-          type: "timestamptz",
-          primaryKey: true,
-          notNull: true
-        },
-        winner_id: {
-          type: "int",
-          primaryKey: true,
+        is_winner: {
+          type: "boolean",
           notNull: true,
-          foreignKey: {
-            name: "rounds_winners_winners_id_fk",
-            table: "players",
-            rules: {
-              onDelete: "CASCADE",
-              onUpdate: "RESTRICT"
-            },
-            mapping: "id"
-          }
+          defaultValue: false
         }
       }),
       db.runSql.bind(
         db,
-        `ALTER TABLE "rounds_winners"
-        ADD CONSTRAINT "rounds_winners_round_id_fk"
+        `ALTER TABLE "rounds_players"
+        ADD CONSTRAINT "rounds_players_round_id_fk"
         FOREIGN KEY (round_game_id, round_group_id, round_time)
         REFERENCES "rounds" (game_id, group_id, time)
         ON DELETE CASCADE
@@ -235,14 +200,14 @@ exports.up = (db, callback) => {
           }
         }
       }),
-      db.createTable.bind(db, "groups_games", {
-        group_id: {
+      db.createTable.bind(db, "games_groups", {
+        game_id: {
           type: "int",
           primaryKey: true,
           notNull: true,
           foreignKey: {
-            name: "groups_games_group_id_fk",
-            table: "groups",
+            name: "games_groups_game_id_fk",
+            table: "games",
             rules: {
               onDelete: "CASCADE",
               onUpdate: "RESTRICT"
@@ -250,13 +215,13 @@ exports.up = (db, callback) => {
             mapping: "id"
           }
         },
-        game_id: {
+        group_id: {
           type: "int",
           primaryKey: true,
           notNull: true,
           foreignKey: {
-            name: "groups_games_game_id_fk",
-            table: "games",
+            name: "games_groups_group_id_fk",
+            table: "groups",
             rules: {
               onDelete: "CASCADE",
               onUpdate: "RESTRICT"
@@ -286,11 +251,10 @@ exports.down = (db, callback) => {
   async.series(
     [
       db.dropTable.bind(db, "test"),
-      db.dropTable.bind(db, "groups_games"),
+      db.dropTable.bind(db, "games_groups"),
       db.dropTable.bind(db, "groups_players"),
       db.dropTable.bind(db, "games_players"),
-      db.dropTable.bind(db, "rounds_winners"),
-      db.dropTable.bind(db, "rounds_participants"),
+      db.dropTable.bind(db, "rounds_players"),
       db.dropTable.bind(db, "rounds"),
       db.dropTable.bind(db, "games"),
       db.dropTable.bind(db, "groups"),
