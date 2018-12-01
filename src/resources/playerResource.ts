@@ -1,10 +1,10 @@
 import cors from "cors";
 import express, { Router } from "express";
-import ScoreTableRepository from "../repositories/scoreTableRepository";
+import PlayerRepository from "../repositories/playerRepository";
 
 const router: Router = express.Router();
 
-const scoreTableRepository: ScoreTableRepository = new ScoreTableRepository();
+const playerRepository: PlayerRepository = new PlayerRepository();
 
 const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
 
@@ -12,9 +12,11 @@ const corsOptions = {
   origin: clientUrl
 };
 
-router.get("/group/:groupId/game/:gameId", cors(corsOptions), (request, response) => {
-  scoreTableRepository
-    .scores(request.params.groupId, request.params.gameId)
+router.options("/", cors(corsOptions));
+
+router.post("/", cors(corsOptions), (request, response) => {
+  playerRepository
+    .addPlayer(request.body, request.query.groupId, request.query.gameId)
     .then(scores => {
       return response.json({ "data": scores.rows });
     })

@@ -1,7 +1,8 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
-import scoreTable from "./resources/scoreTableResource";
+import scoreTableResource from "./resources/scoreTableResource";
+import playerResource from "./resources/playerResource";
 import ScoresRepository from "./scoresRepository";
 
 const app = express();
@@ -16,7 +17,8 @@ const scoresRepository : ScoresRepository = new ScoresRepository();
 
 app.use(bodyParser.json());
 
-app.use("/scoreTable", scoreTable);
+app.use("/scoreTable", scoreTableResource);
+app.use("/player", playerResource);
 
 app.get("/api/status", (request, response) => {
   response.json({ status: "Most Excellent" });
