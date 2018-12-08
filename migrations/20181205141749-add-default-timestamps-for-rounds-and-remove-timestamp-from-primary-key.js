@@ -89,16 +89,14 @@ exports.down = (db, callback) => {
         DROP CONSTRAINT rounds_players_pkey;`
       ),
       db.removeColumn.bind(db, "rounds_players", "round_id"),
-      db.addColumn.bind(db, "round_game_id", {
+      db.addColumn.bind(db, "rounds_players", "round_game_id", {
         type: "int",
-        primaryKey: true,
         notNull: true
-      },
-      db.addColumn.bind(db, "round_group_id", {
+      }),
+      db.addColumn.bind(db, "rounds_players", "round_group_id", {
         type: "int",
-        primaryKey: true,
         notNull: true
-      },
+      }),
       db.addColumn.bind(db, "rounds_players", "round_time", {
         type: "timestamptz",
         primaryKey: true,
