@@ -35,7 +35,7 @@ describe("Player", () => {
 
     it("should add a new player assigned to a given group and game", () => {
       return request(server)
-        .post("/player?groupId=1&gameId=1")
+        .post("/player?groupId=1&gameId=2")
         .send({ name: "ジョンさん" })
         .then(response => {
           expect(response).to.have.status(200);
@@ -62,7 +62,7 @@ describe("Player", () => {
             SELECT COUNT(*)
             FROM games_players
             WHERE player_id = 4
-            AND game_id = 1`)
+            AND game_id = 2`)
             .then((result) =>
               expect(result.rows[0].count).to.equal(1, "Game count should be 1")
             ))

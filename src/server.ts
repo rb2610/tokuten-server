@@ -3,8 +3,9 @@ import cors from "cors";
 import express from "express";
 import gameResource from "./resources/gameResource";
 import groupResource from "./resources/groupResource";
-import scoreTableResource from "./resources/scoreTableResource";
 import playerResource from "./resources/playerResource";
+import roundResource from "./resources/roundResource";
+import scoreTableResource from "./resources/scoreTableResource";
 import ScoresRepository from "./scoresRepository";
 
 const app = express();
@@ -21,8 +22,9 @@ app.use(bodyParser.json());
 
 app.use("/game", gameResource);
 app.use("/group", groupResource);
-app.use("/scoreTable", scoreTableResource);
 app.use("/player", playerResource);
+app.use("/round", roundResource);
+app.use("/scoreTable", scoreTableResource);
 
 app.get("/api/status", (request, response) => {
   response.json({ status: "Most Excellent" });

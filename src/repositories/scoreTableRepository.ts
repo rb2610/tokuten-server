@@ -16,21 +16,23 @@ class ScoreTableRepository {
     try {
       return await pool.query(
         `SELECT players.name,
-	        COUNT(rounds_players.is_winner) FILTER (WHERE is_winner = true) AS wins,
+          COUNT(rounds_players.is_winner) FILTER (WHERE is_winner = true) AS wins,
 	        COUNT(rounds_players.player_id) as played
         FROM players
         LEFT JOIN rounds_players
-          ON (rounds_players.player_id = players.id)
+	        ON (rounds_players.player_id = players.id)
         INNER JOIN games_players
-          ON (games_players.player_id = players.id)
+	        ON (games_players.player_id = players.id)
         INNER JOIN groups_players
-          ON (groups_players.player_id = players.id)
+	        ON (groups_players.player_id = players.id)
+        LEFT JOIN rounds
+	        ON (rounds_players.round_id = rounds.id)
         WHERE games_players.game_id = $1
         AND groups_players.group_id = $2
-        AND (rounds_players.round_game_id = games_players.game_id
-          OR rounds_players.round_game_id IS NULL)
-        AND (rounds_players.round_group_id = groups_players.group_id
-          OR rounds_players.round_group_id IS NULL)
+        AND (rounds.game_id = games_players.game_id
+	        OR rounds.game_id IS NULL)
+        AND (rounds.group_id = groups_players.group_id
+	        OR rounds.group_id IS NULL)
         GROUP BY players.id;`,
         [gameId, groupId]
       );
