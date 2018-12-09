@@ -11,7 +11,7 @@ export interface IScore {
   played: number;
 }
 
-class ScoreTableRepository {
+class ScoresRepository {
   async scores(groupId: number, gameId: number): Promise<QueryResult> {
     try {
       return await pool.query(
@@ -43,4 +43,4 @@ class ScoreTableRepository {
   }
 }
 
-export default ScoreTableRepository;
+export default ScoresRepository;

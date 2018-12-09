@@ -14,6 +14,18 @@ const corsOptions = {
 
 router.options("/", cors(corsOptions));
 
+router.get("/", cors(corsOptions), (request, response) => {
+  gameRepository
+    .games()
+    .then(scores => {
+      return response.json({ data: scores.rows });
+    })
+    .catch(error => {
+      console.log(error);
+      return response.json(error);
+    });
+});
+
 router.post("/", cors(corsOptions), (request, response) => {
   gameRepository
     .addGame(request.body)

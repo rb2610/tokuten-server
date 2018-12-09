@@ -14,11 +14,23 @@ const corsOptions = {
 
 router.options("/", cors(corsOptions));
 
+router.get("/", cors(corsOptions), (request, response) => {
+  groupRepository
+    .groups()
+    .then(groups => {
+      return response.json({ data: groups.rows });
+    })
+    .catch(error => {
+      console.log(error);
+      return response.json(error);
+    });
+});
+
 router.post("/", cors(corsOptions), (request, response) => {
   groupRepository
     .addGroup(request.body)
-    .then(scores => {
-      return response.json({ "data": scores.rows });
+    .then(groups => {
+      return response.json({ "data": groups.rows });
     })
     .catch(error => {
       console.log(error);

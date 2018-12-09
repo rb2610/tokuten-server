@@ -12,10 +12,35 @@ const request = chai.request;
 const pool: Pool = new Pool();
 
 describe("Group", () => {
-  describe("POST /group", () => {
+  describe("GET /groups", () => {
+    it("should list all available groups", () => {
+      return request(server)
+        .get("/groups")
+        .then(response => {
+          expect(response).to.have.status(200);
+          expect(response.body).to.deep.equal({
+            data: [
+              {
+                id: 1,
+                name: "Test Group"
+              },
+              {
+                id: 2,
+                name: "Other Group"
+              }
+            ]
+          });
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
+  describe("POST /groups", () => {
     it("should add a new group", () => {
       return request(server)
-        .post("/group")
+        .post("/groups")
         .send({ name: "New Group" })
         .then(response => {
           expect(response).to.have.status(200);

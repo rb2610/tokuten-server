@@ -12,10 +12,10 @@ const request = chai.request;
 const pool: Pool = new Pool();
 
 describe("Player", () => {
-  describe("POST /player", () => {
+  describe("POST /players", () => {
     it("should add a new player", () => {
       return request(server)
-        .post("/player")
+        .post("/players")
         .send({ name: "ジョンさん" })
         .then(response => {
           expect(response).to.have.status(200);
@@ -35,7 +35,7 @@ describe("Player", () => {
 
     it("should add a new player assigned to a given group and game", () => {
       return request(server)
-        .post("/player?groupId=1&gameId=2")
+        .post("/players?groupId=1&gameId=2")
         .send({ name: "ジョンさん" })
         .then(response => {
           expect(response).to.have.status(200);

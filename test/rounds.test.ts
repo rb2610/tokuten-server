@@ -12,10 +12,10 @@ const request = chai.request;
 const pool: Pool = new Pool();
 
 describe("Round", () => {
-  describe("POST /round", () => {
+  describe("POST /rounds", () => {
     it("should add a new round for a given group and game with the given participants and winner", () => {
       return request(server)
-        .post("/round?groupId=2&gameId=1")
+        .post("/rounds?groupId=2&gameId=1")
         .send({
           participants: [
             {

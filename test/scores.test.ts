@@ -16,10 +16,10 @@ const request = chai.request;
 const pool: Pool = new Pool();
 
 describe("ScoreTable", () => {
-  describe("GET /scoreTable/group/:groupId/game/:gameId", () => {
+  describe("GET /scores/group/:groupId/game/:gameId", () => {
     it("should return a JSON containing scores for the given group and game", () => {
       return request(server)
-        .get("/scoreTable/group/1/game/1")
+        .get("/scores/group/1/game/1")
         .then(response => {
           expect(response).to.have.status(200);
           expect(response.body).to.deep.equal({
@@ -46,7 +46,7 @@ describe("ScoreTable", () => {
       return insertTestPlayer(pool)
         .then(() => {
           return request(server)
-            .get("/scoreTable/group/1/game/1")
+            .get("/scores/group/1/game/1")
             .then(response => {
               expect(response).to.have.status(200);
               expect(response.body).to.deep.equal({
@@ -79,7 +79,7 @@ describe("ScoreTable", () => {
       return insertTestPlayer(pool)
         .then(() => {
           return request(server)
-            .get("/scoreTable/group/5/game/3")
+            .get("/scores/group/5/game/3")
             .then(response => {
               expect(response).to.have.status(200);
               expect(response.body).to.deep.equal({

@@ -12,10 +12,35 @@ const request = chai.request;
 const pool: Pool = new Pool();
 
 describe("Game", () => {
-  describe("POST /game", () => {
+  describe("GET /games", () => {
+    it("should list all available games", () => {
+      return request(server)
+        .get("/games")
+        .then(response => {
+          expect(response).to.have.status(200);
+          expect(response.body).to.deep.equal({
+            data: [
+              {
+                id: 1,
+                name: "Tekken 7"
+              },
+              {
+                id: 2,
+                name: "Mario Kart"
+              }
+            ]
+          });
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
+  describe("POST /games", () => {
     it("should add a new game", () => {
       return request(server)
-        .post("/game")
+        .post("/games")
         .send({ name: "Smash Bros. Ultimate" })
         .then(response => {
           expect(response).to.have.status(200);
