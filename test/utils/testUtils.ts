@@ -2,7 +2,9 @@ import { Pool } from "pg";
 
 export async function setUpDatabase(pool: Pool) {
   return pool
-    .query(`TRUNCATE games_groups, groups_players, games_players, rounds_players, rounds, games, groups, players RESTART IDENTITY CASCADE`)
+    .query(
+      `TRUNCATE games_groups, groups_players, games_players, rounds_players, rounds, games, groups, players RESTART IDENTITY CASCADE`
+    )
     .then(() =>
       pool.query(`
         INSERT INTO players (name)
@@ -21,7 +23,7 @@ export async function setUpDatabase(pool: Pool) {
     .then(() =>
       pool.query(`
         INSERT INTO games_groups (game_id, group_id)
-        VALUES (1, 1)`)
+        VALUES (1, 1), (1, 2), (2, 1), (2, 2)`)
     )
     .then(() =>
       pool.query(`
@@ -31,7 +33,7 @@ export async function setUpDatabase(pool: Pool) {
     .then(() =>
       pool.query(`
         INSERT INTO groups_players (group_id, player_id)
-        VALUES (1, 1), (1, 2), (2, 2), (2, 3)`)
+        VALUES (1, 1), (1, 2), (2, 1), (2, 2), (2, 3)`)
     )
     .then(() =>
       pool.query(
@@ -40,14 +42,13 @@ export async function setUpDatabase(pool: Pool) {
         VALUES
           (1, 1, $1), (1, 1, $2), (1, 1, $3), (1, 1, $4), (1, 1, $5),
           (1, 2, $1), (1, 2, $2),
-          (2, 1, $1), (2, 1, $2), (2, 1, $3),
-          (2, 2, $1), (2, 2, $2)`,
+          (2, 1, $1),
+          (2, 2, $1)`,
         [new Date(1), new Date(2), new Date(3), new Date(4), new Date(5)]
       )
     )
     .then(() =>
-      pool.query(
-        `
+      pool.query(`
         INSERT INTO rounds_players (round_id, player_id, is_winner)
         VALUES
           (1, 1, true), (1, 2, false),
@@ -58,7 +59,6 @@ export async function setUpDatabase(pool: Pool) {
           (6, 1, true), (6, 2, false),
           (7, 1, false), (7, 2, true),
           (8, 1, false), (8, 2, true),
-          (9, 2, false), (9, 3, true)`
-      )
+          (9, 2, false), (9, 3, true)`)
     );
 }

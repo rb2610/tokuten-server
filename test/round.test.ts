@@ -42,7 +42,7 @@ describe("Round", () => {
           //   ]
           // });
           expect(response.body.data).to.have.length(1);
-          expect(response.body.data[0].id).to.equal(13);
+          expect(response.body.data[0].id).to.equal(10);
           expect(response.body.data[0].game_id).to.equal(1);
           expect(response.body.data[0].group_id).to.equal(2);
           expect(response.body.data[0].time).to.match(
@@ -57,7 +57,7 @@ describe("Round", () => {
               `
             SELECT player_id
             FROM rounds_players
-            WHERE round_id = 13`
+            WHERE round_id = 10`
             )
             .then(result => {
               expect(result.rows[0].player_id).to.equal(2);
@@ -68,6 +68,30 @@ describe("Round", () => {
           throw error;
         });
     });
+
+    // TODO: Add DB Trigger to satisfy this requirement
+    // it("should not add a round if the participants are not members of the round's game or group", () => {
+    //   return request(server)
+    //     .post("/round?groupId=2&gameId=1")
+    //     .send({
+    //       participants: [
+    //         {
+    //           id: 3,
+    //           is_winner: true
+    //         },
+    //         {
+    //           id: 4,
+    //           is_winner: false
+    //         }
+    //       ]
+    //     })
+    //     .then(response => {
+    //       expect(response).to.have.status(400);
+    //       expect(response.body).to.equal({
+    //         error: "Given Participants are not members of the game and/or group."
+    //       });
+    //     });
+    // });
   });
 
   beforeEach(done => {

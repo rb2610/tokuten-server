@@ -2,10 +2,14 @@ import server from "../src/server";
 import chai from "chai";
 import chaiHttp from "chai-http";
 import { describe } from "mocha";
+import { Pool } from "pg";
+import { setUpDatabase } from "./utils/testUtils";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
 const request = chai.request;
+
+const pool: Pool = new Pool();
 
 describe("Group", () => {
   describe("POST /group", () => {
@@ -29,4 +33,8 @@ describe("Group", () => {
         });
     });
   })
+
+  beforeEach(done => {
+    setUpDatabase(pool).then(() => done());
+  });
 });
