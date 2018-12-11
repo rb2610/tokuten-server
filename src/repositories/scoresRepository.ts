@@ -29,6 +29,8 @@ class ScoresRepository {
 	        ON (rounds_players.round_id = rounds.id)
         WHERE games_players.game_id = $1
         AND groups_players.group_id = $2
+        AND (rounds.group_id = groups_players.group_id
+	        OR rounds.group_id IS NULL)
         GROUP BY players.id;`,
         [gameId, groupId]
       );
