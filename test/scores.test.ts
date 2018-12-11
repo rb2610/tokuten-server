@@ -25,11 +25,13 @@ describe("ScoreTable", () => {
           expect(response.body).to.deep.equal({
             data: [
               {
+                id: 2,
                 name: "Roo",
                 wins: 2,
                 played: 5
               },
               {
+                id: 1,
                 name: "Foo",
                 wins: 3,
                 played: 5
@@ -52,16 +54,19 @@ describe("ScoreTable", () => {
               expect(response.body).to.deep.equal({
                 data: [
                   {
+                    id: 4,
                     name: "ジョンさん",
                     wins: 0,
                     played: 0
                   },
                   {
+                    id: 2,
                     name: "Roo",
                     wins: 2,
                     played: 5
                   },
                   {
+                    id: 1,
                     name: "Foo",
                     wins: 3,
                     played: 5

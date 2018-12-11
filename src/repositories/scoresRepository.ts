@@ -15,7 +15,7 @@ class ScoresRepository {
   async scores(groupId: number, gameId: number): Promise<QueryResult> {
     try {
       return await pool.query(
-        `SELECT players.name,
+        `SELECT players.id, players.name,
           COUNT(rounds_players.is_winner) FILTER (WHERE is_winner = true) AS wins,
 	        COUNT(rounds_players.player_id) as played
         FROM players
