@@ -114,9 +114,6 @@ describe("ScoreTable", () => {
       await client.query(`
         INSERT INTO groups_players(group_id, player_id)
         VALUES(1, 4)`);
-      await client.query(`
-        INSERT INTO games_players(game_id, player_id)
-        VALUES(1, 4)`);
 
       await client.query(`COMMIT`);
     } catch (exception) {

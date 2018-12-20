@@ -33,9 +33,9 @@ describe("Player", () => {
         });
     });
 
-    it("should add a new player assigned to a given group and game", () => {
+    it("should add a new player assigned to a given group", () => {
       return request(server)
-        .post("/players?groupId=1&gameId=2")
+        .post("/players?groupId=1")
         .send({ name: "ジョンさん" })
         .then(response => {
           expect(response).to.have.status(200);
@@ -57,15 +57,6 @@ describe("Player", () => {
             .then((result) =>
               expect(result.rows[0].count).to.equal(1, "Group count should be 1")
           ))
-        .then(() =>
-          pool.query(`
-            SELECT COUNT(*)
-            FROM games_players
-            WHERE player_id = 4
-            AND game_id = 2`)
-            .then((result) =>
-              expect(result.rows[0].count).to.equal(1, "Game count should be 1")
-            ))
         .catch(error => {
           throw error;
         });

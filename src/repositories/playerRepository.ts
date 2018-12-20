@@ -8,7 +8,7 @@ export interface IPlayer {
 }
 
 class PlayerRepository {
-  async addPlayer(player: IPlayer, groupId?: number, gameId?: number): Promise<QueryResult> {
+  async addPlayer(player: IPlayer, groupId?: number): Promise<QueryResult> {
     const client = await pool.connect();
 
     try {
@@ -24,13 +24,6 @@ class PlayerRepository {
           INSERT INTO groups_players(group_id, player_id)
           VALUES($1, $2)`,
           [groupId, result.rows[0].id]);
-      }
-
-      if (gameId !== undefined) {
-        await client.query(`
-          INSERT INTO games_players(game_id, player_id)
-          VALUES($1, $2)`,
-          [gameId, result.rows[0].id]);
       }
 
       await client.query(`COMMIT`);

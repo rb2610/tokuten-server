@@ -3,7 +3,7 @@ import { Pool } from "pg";
 export async function setUpDatabase(pool: Pool) {
   return pool
     .query(
-      `TRUNCATE games_groups, groups_players, games_players, rounds_players, rounds, games, groups, players RESTART IDENTITY CASCADE`
+      `TRUNCATE games_groups, groups_players, rounds_players, rounds, games, groups, players RESTART IDENTITY CASCADE`
     )
     .then(() =>
       pool.query(`
@@ -24,11 +24,6 @@ export async function setUpDatabase(pool: Pool) {
       pool.query(`
         INSERT INTO games_groups (game_id, group_id)
         VALUES (1, 1), (1, 2), (2, 1), (2, 2)`)
-    )
-    .then(() =>
-      pool.query(`
-        INSERT INTO games_players (game_id, player_id)
-        VALUES (1, 1), (1, 2), (2, 1), (2, 2), (2, 3)`)
     )
     .then(() =>
       pool.query(`

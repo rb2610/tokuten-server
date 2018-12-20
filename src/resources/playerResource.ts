@@ -16,7 +16,7 @@ router.options("/", cors(corsOptions));
 
 router.post("/", cors(corsOptions), (request, response) => {
   playerRepository
-    .addPlayer(request.body, request.query.groupId, request.query.gameId)
+    .addPlayer(request.body, request.query.groupId)
     .then(scores => {
       return response.json({ "data": scores.rows });
     })
