@@ -16,13 +16,11 @@ class ScoresRepository {
     try {
       return await pool.query(
         `SELECT players.id, players.name,
-          COUNT(rounds_players.is_winner) FILTER (WHERE is_winner = true AND rounds.game_id = $1 AND games_players.game_id = $1) AS wins,
- 	        COUNT(rounds_players.player_id) FILTER (WHERE rounds.game_id = $1 AND games_players.game_id = $1) as played
+          COUNT(rounds_players.is_winner) FILTER (WHERE is_winner = true AND rounds.game_id = $1) AS wins,
+ 	        COUNT(rounds_players.player_id) FILTER (WHERE rounds.game_id = $1) as played
         FROM players
         LEFT JOIN rounds_players
 	        ON (rounds_players.player_id = players.id)
-        INNER JOIN games_players
-	        ON (games_players.player_id = players.id)
         INNER JOIN groups_players
 	        ON (groups_players.player_id = players.id)
         LEFT JOIN rounds

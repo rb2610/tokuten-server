@@ -80,11 +80,11 @@ describe("ScoreTable", () => {
         });
     });
 
-    it("should not return players not in the selected group and game (even with no rounds played)", () => {
+    it("should not return players not in the selected group (even with no rounds played)", () => {
       return insertTestPlayer(pool)
         .then(() => {
           return request(server)
-            .get("/scores/group/5/game/3")
+            .get("/scores/group/5/game/1")
             .then(response => {
               expect(response).to.have.status(200);
               expect(response.body).to.deep.equal({
