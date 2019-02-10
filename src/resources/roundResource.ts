@@ -1,28 +1,28 @@
 import cors from "cors";
 import express, { Router } from "express";
 import RoundRepository from "../repositories/roundRepository";
+import { loginRequired } from "../auth/utils";
+import { corsOptions } from "../util/constants";
 
 const router: Router = express.Router();
 
 const roundRepository: RoundRepository = new RoundRepository();
 
-const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
-
-const corsOptions = {
-  origin: clientUrl
-};
-
 router.options("/", cors(corsOptions));
 
-router.post("/", cors(corsOptions), (request, response) => {
+router.post("/", cors(corsOptions), loginRequired, (request, response) => {
   roundRepository
-    .addRound(request.query.groupId, request.query.gameId, request.body.participants)
+    .addRound(
+      request.query.groupId,
+      request.query.gameId,
+      request.body.participants
+    )
     .then(scores => {
-      return response.json({ "data": scores.rows });
+      return response.json({ data: scores.rows });
     })
     .catch(error => {
       console.log(error);
-      return response.json(error)
+      return response.json(error);
     });
 });
 

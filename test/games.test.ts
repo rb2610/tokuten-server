@@ -6,11 +6,13 @@ import { Pool } from "pg";
 import { setUpDatabase } from "./utils/testUtils";
 
 chai.use(chaiHttp);
-const expect = chai.expect;
+const expect = chai.expect,
+  and = chai.expect;
 const request = chai.request;
 
 const pool: Pool = new Pool();
 
+// TODO: Test auth
 describe("Game", () => {
   describe("GET /games", () => {
     it("should list all available games", () => {
@@ -18,7 +20,7 @@ describe("Game", () => {
         .get("/games")
         .then(response => {
           expect(response).to.have.status(200);
-          expect(response.body).to.deep.equal({
+          and(response.body).to.deep.equal({
             data: [
               {
                 id: 1,
@@ -44,7 +46,7 @@ describe("Game", () => {
         .send({ name: "Smash Bros. Ultimate" })
         .then(response => {
           expect(response).to.have.status(200);
-          expect(response.body).to.deep.equal({
+          and(response.body).to.deep.equal({
             data: [
               {
                 id: 3,
@@ -57,7 +59,7 @@ describe("Game", () => {
           throw error;
         });
     });
-  })
+  });
 
   beforeEach(done => {
     setUpDatabase(pool).then(() => done());

@@ -1,20 +1,16 @@
 import cors from "cors";
 import express, { Router } from "express";
 import GroupRepository from "../repositories/groupRepository";
+import { loginRequired } from "../auth/utils";
+import { corsOptions } from "../util/constants";
 
 const router: Router = express.Router();
 
 const groupRepository: GroupRepository = new GroupRepository();
 
-const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
-
-const corsOptions = {
-  origin: clientUrl
-};
-
 router.options("/", cors(corsOptions));
 
-router.get("/", cors(corsOptions), (request, response) => {
+router.get("/", cors(corsOptions), loginRequired, (request, response) => {
   groupRepository
     .groups()
     .then(groups => {
@@ -26,15 +22,15 @@ router.get("/", cors(corsOptions), (request, response) => {
     });
 });
 
-router.post("/", cors(corsOptions), (request, response) => {
+router.post("/", cors(corsOptions), loginRequired, (request, response) => {
   groupRepository
     .addGroup(request.body)
     .then(groups => {
-      return response.json({ "data": groups.rows });
+      return response.json({ data: groups.rows });
     })
     .catch(error => {
       console.log(error);
-      return response.json(error)
+      return response.json(error);
     });
 });
 

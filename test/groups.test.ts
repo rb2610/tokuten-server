@@ -6,11 +6,13 @@ import { Pool } from "pg";
 import { setUpDatabase } from "./utils/testUtils";
 
 chai.use(chaiHttp);
-const expect = chai.expect;
+const expect = chai.expect,
+  and = chai.expect;
 const request = chai.request;
 
 const pool: Pool = new Pool();
 
+// TODO: Test auth
 describe("Group", () => {
   describe("GET /groups", () => {
     it("should list all available groups", () => {
@@ -18,7 +20,7 @@ describe("Group", () => {
         .get("/groups")
         .then(response => {
           expect(response).to.have.status(200);
-          expect(response.body).to.deep.equal({
+          and(response.body).to.deep.equal({
             data: [
               {
                 id: 1,
@@ -44,7 +46,7 @@ describe("Group", () => {
         .send({ name: "New Group" })
         .then(response => {
           expect(response).to.have.status(200);
-          expect(response.body).to.deep.equal({
+          and(response.body).to.deep.equal({
             data: [
               {
                 id: 3,

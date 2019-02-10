@@ -10,11 +10,13 @@ import { __await } from "tslib";
 defaults.parseInt8 = true;
 
 chai.use(chaiHttp);
-const expect = chai.expect;
+const expect = chai.expect,
+  and = chai.expect;
 const request = chai.request;
 
 const pool: Pool = new Pool();
 
+// TODO: Test auth
 describe("ScoreTable", () => {
   describe("GET /scores/group/:groupId/game/:gameId", () => {
     it("should return a JSON containing scores for the given group and game", () => {
@@ -22,7 +24,7 @@ describe("ScoreTable", () => {
         .get("/scores/group/1/game/1")
         .then(response => {
           expect(response).to.have.status(200);
-          expect(response.body).to.deep.equal({
+          and(response.body).to.deep.equal({
             data: [
               {
                 id: 2,
@@ -51,7 +53,7 @@ describe("ScoreTable", () => {
             .get("/scores/group/1/game/1")
             .then(response => {
               expect(response).to.have.status(200);
-              expect(response.body).to.deep.equal({
+              and(response.body).to.deep.equal({
                 data: [
                   {
                     id: 4,
@@ -87,7 +89,7 @@ describe("ScoreTable", () => {
             .get("/scores/group/5/game/1")
             .then(response => {
               expect(response).to.have.status(200);
-              expect(response.body).to.deep.equal({
+              and(response.body).to.deep.equal({
                 data: []
               });
             });

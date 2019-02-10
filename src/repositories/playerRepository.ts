@@ -2,6 +2,7 @@ import { Pool, QueryResult } from "pg";
 
 const pool: Pool = new Pool();
 
+// TODO: Remove 'I' from interfaces.
 export interface IPlayer {
   id: number;
   name: string;

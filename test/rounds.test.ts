@@ -6,11 +6,13 @@ import { Pool } from "pg";
 import { setUpDatabase } from "./utils/testUtils";
 
 chai.use(chaiHttp);
-const expect = chai.expect;
+const expect = chai.expect,
+  and = chai.expect;
 const request = chai.request;
 
 const pool: Pool = new Pool();
 
+// TODO: Test auth
 describe("Round", () => {
   describe("POST /rounds", () => {
     it("should add a new round for a given group and game with the given participants and winner", () => {
@@ -41,11 +43,11 @@ describe("Round", () => {
           //     }
           //   ]
           // });
-          expect(response.body.data).to.have.length(1);
-          expect(response.body.data[0].id).to.equal(10);
-          expect(response.body.data[0].game_id).to.equal(1);
-          expect(response.body.data[0].group_id).to.equal(2);
-          expect(response.body.data[0].time).to.match(
+          and(response.body.data).to.have.length(1);
+          and(response.body.data[0].id).to.equal(10);
+          and(response.body.data[0].game_id).to.equal(1);
+          and(response.body.data[0].group_id).to.equal(2);
+          and(response.body.data[0].time).to.match(
             new RegExp(
               "[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T(2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9](?:.[0-9]+)?Z"
             )
@@ -61,7 +63,7 @@ describe("Round", () => {
             )
             .then(result => {
               expect(result.rows[0].player_id).to.equal(2);
-              expect(result.rows[1].player_id).to.equal(3);
+              and(result.rows[1].player_id).to.equal(3);
             })
         )
         .catch(error => {

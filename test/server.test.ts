@@ -4,7 +4,8 @@ import chaiHttp from "chai-http";
 import { describe } from "mocha";
 
 chai.use(chaiHttp);
-const expect = chai.expect;
+const expect = chai.expect,
+  and = chai.expect;
 const request = chai.request;
 
 describe("Server API", () => {
@@ -14,7 +15,7 @@ describe("Server API", () => {
         .get("/status")
         .then(response => {
           expect(response).to.have.status(200);
-          expect(response.body).to.deep.equal({
+          and(response.body).to.deep.equal({
             status: "Most Excellent"
           });
         })
