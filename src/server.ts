@@ -21,6 +21,7 @@ const isSecure = process.env.NODE_ENV !== "dev"
 
 passportInit();
 
+app.set("trust proxy", 1);
 app.use(bodyParser.json());
 app.use(
   session({
